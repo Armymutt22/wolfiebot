@@ -15,6 +15,15 @@ class GameCommands():
         self.client = client
 
     @commands.command(pass_context=True)
+    async def setplayers(self, ctx):
+        if "Game Master" in [y.name for y in ctx.message.author.roles]:
+            player_role = discord.utils.get(ctx.message.server.roles, name="Player")
+            players = ctx.message.mentions
+            for p in players:
+                if "Player" not in [y.name for y in p.roles]:
+                    await self.client.add_roles(p, player_role)
+
+    @commands.command(pass_context=True)
     async def rungame(self, ctx, *, message: str):
         global PlayerInfo, NeedDeputy
         await self.client.say("This command is in development.")
@@ -231,20 +240,13 @@ class GameCommands():
             await self.client.say("You need to be a GM to use this command!")
 
     @commands.command(pass_context=True)
-    async def choosedeputy(self, ctx, *, chosen: str):
+    async def choosedeputy(self, ctx, *, chosen: discord.Member):
         global NeedDeputy
         if NeedDeputy == True:
             if "Mayor" in [y.name for y in ctx.message.author.roles]:
-                deputy_role = discord.utils.get(ctx.message.server.roles, name="Deputy")
-                chosen = chosen[2:-1]
-                server = ctx.message.author.server
-                chosen = server.get_member(chosen)
-                if "Player" in [y.name for y in chosen.roles]:
-                    await self.client.add_roles(chosen, deputy_role)
-                    NeedDeputy = False
-                    await self.client.say("{} has been chosen as Deputy!".format(chosen.mention))
-                else:
-                    await self.client.say("That user is not a player.")
+                await ctx.invoke(self.client.get_command("deputy"),player=chosen,invoked=True)
+                NeedDeputy = False
+                await self.client.say("{} has been chosen as Deputy!".format(chosen.mention))
             else:
                 await self.client.say("You need to be the Mayor to use this command!")
         else:
@@ -286,10 +288,34 @@ class GameCommands():
         deputy_role = discord.utils.get(ctx.message.server.roles, name="Deputy")
         if "Game Master" in [y.name for y in ctx.message.author.roles]:
             if "Player" in [y.name for y in player.roles]:
-                if "Mayor" not in [y.name for y in player.roles]:
+                if mayor_role not in [x for y in [p.roles for p in ctx.message.server.members if player_role in p.roles] for x in y]:
                     await self.client.add_roles(player, mayor_role)
-                    if "Deputy" in [y.name for y in player.roles]:
+                    if deputy_role in [y for y in player.roles]:
                         await self.client.remove_roles(player, deputy_role)
+                else:
+                    await self.client.say("There is already a Mayor in this game.")
+            else:
+                await self.client.say("User is either dead or not in the game.")
+        else:
+            await self.client.say("You need to be a GM to use this command!")
+
+    @commands.command(pass_context=True)
+    async def deputy(self, ctx, player: discord.Member, invoked=False):
+        mayor_role = discord.utils.get(ctx.message.server.roles, name="Mayor")
+        deputy_role = discord.utils.get(ctx.message.server.roles, name="Deputy")
+        if "Game Master" in [y.name for y in ctx.message.author.roles] or invoked == True:
+            if "Player" in [y.name for y in player.roles]:
+                if deputy_role not in [x for y in [p.roles for p in ctx.message.server.members if player_role in p.roles] for x in y]:
+                    if mayor_role not in [y for y in player.roles]:
+                        await self.client.add_roles(player, deputy_role)
+                    else:
+                        await self.client.say("User is the Mayor.")
+                else:
+                    await self.client.say("There is already a Deputy in this game.")
+            else:
+                await self.client.say("User is either dead or not in the game.")
+        else:
+            await self.client.say("You need to be a GM to use this command!")
 
     @commands.command(pass_context=True)
     async def lockjaw(self, ctx, user: discord.Member, status: str):

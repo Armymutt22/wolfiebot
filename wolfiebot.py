@@ -53,11 +53,14 @@ async def help(ctx):
 @client.command(pass_context=True)
 async def gm_help(ctx):
     await client.say("""```md
+<w.setplayers (mentions)> - Sets all users mentioned as Player.
 <w.gamestatus> - Returns all players in the current game with information about them. 
 <w.giveroles (player: role, etc)> - Gives players listed the applied role.
 <w.playervote> - Creates a vote in #voting for the players.
 <w.daytimer (n; seconds; announcements)> - Sets a timer for the day, unlocks #game at start, locks #game when it ends. Seperate lines in announcements with /.
 <w.night> - Ends day.
+<w.mayor (@player)> - Sets given player as Mayor.
+<w.deputy (@player)> - Sets given player as Deputy.
 <w.kill (@player)> - Kills the given player.
 <w.lockjaw (@player boolean)> - If boolean true, lockjaws player; if false, unlockjaws player.
 <w.medium (@player boolean)> - If boolean true, gives player perms to see #dead; if false, removes perms.```""")

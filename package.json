@@ -1,0 +1,28 @@
+{
+  "name": "WolfieBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "wolfiebot.py",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node wolfiebot.py"
+  },
+  "engines": {
+    "node": "0.10.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Armymutt22/WolfieBot"
+  },
+  "author": "Armymutt22",
+  "license": ""
+  },
+  "dependencies": {
+    "hapi": "^8.4.0",
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+  }
+}
