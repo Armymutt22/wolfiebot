@@ -1475,7 +1475,7 @@ class RoleDescriptions():
 **Actions:**
 *Thread* - Once per game, at night, can use their Thread and choose any dead player. The #dead chat is given the chance to vote collectively on which dead player is to be revived, and the player chosen by the Spider gains an extra vote, and wins all ties. The player revived as a result of this action gains a Queued Powerful Save.
 *Web* - This action has three charges. At night, can choose to activate their Web and choose an amount of charges to use. This action may not be used once all charges are depleted. All players who target them that night have all their actions fail that night, and for an amount of subsequent nights equal to one less than the amount of charges used.
-**Abilties**
+**Abilties:**
 - If killed by Wolves, becomes a Spectre.
 **Objectives:**
 - Have at least one Evil role survive until all Good and Neutral roles have been eliminated.
